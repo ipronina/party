@@ -1,1 +1,10 @@
-<div></div>
+<div *ngFor="let guest of guests">
+  <!-- <div> -->
+  <span>{{ guest.id }}</span>
+  <span>{{ guest.firstName }}</span>
+  <span>{{ guest.lastName }}</span>
+  <span>{{ guest.gender }}</span>
+  <span>{{ guest.age }}</span>
+  <span>{{ guest.preferDrink }}</span>
+  <!-- </div> -->
+</div>
