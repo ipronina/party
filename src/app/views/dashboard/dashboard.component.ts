@@ -12,4 +12,8 @@ export class DashboardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  public getValues(object: {}): {} {
+    return Object.values(object);
+  }
 }

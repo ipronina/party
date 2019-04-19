@@ -1,10 +1,69 @@
-<div *ngFor="let guest of guests">
-  <!-- <div> -->
-  <span>{{ guest.id }}</span>
-  <span>{{ guest.firstName }}</span>
-  <span>{{ guest.lastName }}</span>
-  <span>{{ guest.gender }}</span>
-  <span>{{ guest.age }}</span>
-  <span>{{ guest.preferDrink }}</span>
-  <!-- </div> -->
+<div class="container">
+  <div class="table">
+    <div
+      class="table__item table__item_header"
+      [ngStyle]="{
+        'grid-row': 1
+      }"
+    >
+      <span
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': 1
+        }"
+        >id</span
+      >
+      <span
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': 2
+        }"
+        >Имя</span
+      >
+      <span
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': 3
+        }"
+        >Фамилия</span
+      >
+      <span
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': 4
+        }"
+        >Пол</span
+      >
+      <span
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': 5
+        }"
+        >Возраст</span
+      >
+      <span
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': 6
+        }"
+        >Напиток</span
+      >
+    </div>
+    <div
+      *ngFor="let guest of guests; let i = index"
+      class="table__item"
+      [ngStyle]="{
+        'grid-row': i + 2
+      }"
+    >
+      <span
+        *ngFor="let property of getValues(guest); let j = index"
+        class="table__item-span"
+        [ngStyle]="{
+          'grid-column': j + 1
+        }"
+        >{{ property }}</span
+      >
+    </div>
+  </div>
 </div>
