@@ -1,0 +1,54 @@
+:host {
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100vh;
+}
+
+.button {
+  width: fit-content;
+  margin: 0 10px 10px;
+}
+
+.table {
+  display: grid;
+  grid-template-rows: 1fr;
+
+  &__content {
+    display: grid;
+    grid-auto-flow: column;
+    max-height: 60vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    > :nth-child(even) {
+      background: #e4e4e4;
+    }
+  }
+
+  &__item {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: start;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #f3f3f3;
+    padding: 1rem 2.5rem;
+    font-weight: 300;
+
+    &_header {
+      font-weight: 600;
+      background: #e4e4e4;
+    }
+  }
+
+  &__item-button {
+    margin: 0 5px;
+  }
+}
