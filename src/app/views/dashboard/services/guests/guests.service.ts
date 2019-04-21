@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { IGuest } from 'src/app/models';
 
 @Injectable()
 export class GuestsService {

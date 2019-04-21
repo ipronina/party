@@ -20,4 +20,14 @@ export class GuestService {
     this.guestsService.updateGuests();
     console.log('add');
   }
+
+  public getGuest(id: number) {
+    return assign(get(this.guestsService.guests, 'guests.id'), { id });
+  }
+
+  public removeGuest(id: number) {
+    delete this.guestsService.guests.id;
+    this.guestsService.updateGuests();
+    console.log('remove');
+  }
 }
