@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GUESTS } from '../../mocks';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { GuestService } from './services/guest';
+import { IGuest } from 'src/app/models';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,8 +11,10 @@ import { GuestService } from './services/guest';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('modal') public modal;
   public guests = GUESTS;
   public myForm: FormGroup;
+  private editableGuestId: number;
 
   constructor(private modalService: NgbModal, private guestService: GuestService) {}
 
@@ -29,21 +32,34 @@ export class DashboardComponent implements OnInit {
     return Object.values(object);
   }
 
-  public openModal(content) {
-    this.modalService.open(content, { centered: true });
+  public openModal(modal): void {
+    this.modalService.open(modal, { centered: true });
   }
 
-  public addGuest(form: FormGroup) {
+  public assignGuest(guestObj: IGuest): void {
+    if (guestObj) {
+      this.setFormValue(guestObj);
+    }
+    this.editableGuestId = guestObj.id;
+    this.openModal(this.modal);
+  }
+
+  private setFormValue(object: IGuest): void {
+    Object.keys(this.myForm.controls).forEach(control => {
+      this.myForm.controls[control].setValue(object[control]);
+    });
+  }
+
+  public formSubmit(form: FormGroup): void {
     if (form.valid) {
-      const guestObj = {
-        name: form.controls.name.value,
-        surname: form.controls.surname.value,
-        gender: form.controls.gender.value,
-        age: form.controls.age.value,
-        drink: form.controls.drink.value,
-      };
-      this.guestService.addGuest(guestObj as any);
+      const guestObj: any = {};
+      Object.keys(this.myForm.controls).forEach(control => {
+        guestObj[control] = this.myForm.controls[control].value;
+      });
+      guestObj.id = this.editableGuestId ? this.editableGuestId : guestObj.id;
+      this.guestService.assignGuest(guestObj as any);
       form.reset();
+      this.editableGuestId = 0;
     }
   }
 }

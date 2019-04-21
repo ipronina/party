@@ -1,5 +1,5 @@
 <div class="container">
-  <button type="button" class="button btn btn-light" (click)="openModal(content)">
+  <button type="button" class="button btn btn-light" (click)="assignGuest()">
     <span translate>add</span>
   </button>
   <div class="table">
@@ -69,7 +69,7 @@
           >{{ property }}</span
         >
         <span class="table__item_span">
-          <button type="button" class="table__item-button btn btn-light">
+          <button type="button" class="table__item-button btn btn-light" (click)="assignGuest(guest)">
             <span translate>edit</span>
           </button>
           <button type="button" class="table__item-button btn btn-light" (click)="deleteGuest(id)">
@@ -81,7 +81,7 @@
   </div>
 </div>
 
-<ng-template #content let-modal class="modal">
+<ng-template #modal let-modal class="modal">
   <div class="modal-header">
     <h4 class="modal-title">Add guest</h4>
     <button
@@ -106,6 +106,6 @@
     <button type="button" class="btn btn-light modal__button" (click)="modal.close('Close click'); myForm.reset()">
       Close
     </button>
-    <button type="submit" class="btn btn-light modal__button" (click)="addGuest(myForm)">Add</button>
+    <button type="submit" class="btn btn-light modal__button" (click)="formSubmit(myForm)">Assign</button>
   </div>
 </ng-template>

@@ -12,20 +12,25 @@ import * as assign from 'lodash.assign';
 export class GuestService {
   constructor(public guestsService: GuestsService) {}
 
-  public addGuest(guest: IGuest) {
-    const id = +findLastKey(this.guestsService.guests) + 1 || 1; // last id from SS + 1
+  public assignGuest(guest: IGuest): void {
     const guestObj = {};
+    let id;
+    // if guest exist
+    if (guest.id && this.guestsService.guests[guest.id]) {
+      id = guest.id;
+    } else {
+      id = +findLastKey(this.guestsService.guests) + 1 || 1; // last id from SS + 1
+    }
     guestObj[id] = guest;
     assign(this.guestsService.guests, guestObj);
     this.guestsService.updateGuests();
-    console.log('add');
   }
 
-  public getGuest(id: number) {
-    return assign(get(this.guestsService.guests, 'guests.id'), { id });
+  public getGuest(id: number): void {
+    assign(get(this.guestsService.guests, 'guests.id'), { id });
   }
 
-  public removeGuest(id: number) {
+  public removeGuest(id: number): void {
     delete this.guestsService.guests.id;
     this.guestsService.updateGuests();
     console.log('remove');

@@ -1,8 +1,8 @@
 export interface IGuest {
   id?: number;
-  firstName: string;
-  lastName: string;
+  name: string;
+  surname: string;
   gender: string;
   age: number;
-  preferDrink: string;
+  drink: string;
 }
