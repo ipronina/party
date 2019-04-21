@@ -27,13 +27,13 @@ describe('DashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('myForm should be defined ', () => {
-    expect(component.myForm).toBeDefined();
-    expect(component.myForm.controls.name).toBeDefined();
-    expect(component.myForm.controls.surname).toBeDefined();
-    expect(component.myForm.controls.gender).toBeDefined();
-    expect(component.myForm.controls.age).toBeDefined();
-    expect(component.myForm.controls.drink).toBeDefined();
+  it('guestForm should be defined ', () => {
+    expect(component.guestForm).toBeDefined();
+    expect(component.guestForm.controls.name).toBeDefined();
+    expect(component.guestForm.controls.surname).toBeDefined();
+    expect(component.guestForm.controls.gender).toBeDefined();
+    expect(component.guestForm.controls.age).toBeDefined();
+    expect(component.guestForm.controls.drink).toBeDefined();
   });
 
   it('should return object values ', () => {

@@ -11,15 +11,16 @@ import { IGuest } from 'src/app/models';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('modal') public modal;
+  @ViewChild('guestModal') public guestModal;
+  @ViewChild('deleteModal') public deleteModal;
   public guests = GUESTS;
-  public myForm: FormGroup;
-  private editableGuestId: number;
+  public guestForm: FormGroup;
+  private currentUserId: number;
 
   constructor(private modalService: NgbModal, private guestService: GuestService) {}
 
   ngOnInit() {
-    this.myForm = new FormGroup({
+    this.guestForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
       gender: new FormControl('', [Validators.required]),
@@ -32,34 +33,41 @@ export class DashboardComponent implements OnInit {
     return Object.values(object);
   }
 
-  public openModal(modal): void {
-    this.modalService.open(modal, { centered: true });
-  }
-
   public assignGuest(guestObj: IGuest): void {
     if (guestObj) {
       this.setFormValue(guestObj);
     }
-    this.editableGuestId = guestObj.id;
-    this.openModal(this.modal);
+    this.currentUserId = guestObj.id;
+    this.modalService.open(this.guestModal, { centered: true });
   }
 
-  private setFormValue(object: IGuest): void {
-    Object.keys(this.myForm.controls).forEach(control => {
-      this.myForm.controls[control].setValue(object[control]);
-    });
+  public openDeleteModal(id: number): void {
+    this.currentUserId = id;
+    this.modalService.open(this.deleteModal, { centered: true });
+  }
+
+  public deleteGuest(): void {
+    if (this.currentUserId) {
+      this.guestService.removeGuest(this.currentUserId);
+      this.currentUserId = 0;
+    }
   }
 
   public formSubmit(form: FormGroup): void {
     if (form.valid) {
       const guestObj: any = {};
-      Object.keys(this.myForm.controls).forEach(control => {
-        guestObj[control] = this.myForm.controls[control].value;
+      Object.keys(this.guestForm.controls).forEach(control => {
+        guestObj[control] = this.guestForm.controls[control].value;
       });
-      guestObj.id = this.editableGuestId ? this.editableGuestId : guestObj.id;
+      guestObj.id = this.currentUserId ? this.currentUserId : guestObj.id;
       this.guestService.assignGuest(guestObj as any);
       form.reset();
-      this.editableGuestId = 0;
+      this.currentUserId = 0;
     }
+  }
+  private setFormValue(object: IGuest): void {
+    Object.keys(this.guestForm.controls).forEach(control => {
+      this.guestForm.controls[control].setValue(object[control]);
+    });
   }
 }

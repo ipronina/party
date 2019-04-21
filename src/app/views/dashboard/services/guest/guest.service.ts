@@ -31,8 +31,7 @@ export class GuestService {
   }
 
   public removeGuest(id: number): void {
-    delete this.guestsService.guests.id;
+    delete this.guestsService.guests[id];
     this.guestsService.updateGuests();
-    console.log('remove');
   }
 }

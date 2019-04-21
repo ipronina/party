@@ -72,7 +72,7 @@
           <button type="button" class="table__item-button btn btn-light" (click)="assignGuest(guest)">
             <span translate>edit</span>
           </button>
-          <button type="button" class="table__item-button btn btn-light" (click)="deleteGuest(id)">
+          <button type="button" class="table__item-button btn btn-light" (click)="openDeleteModal(guest.id)">
             <span translate>x</span>
           </button>
         </span>
@@ -81,20 +81,20 @@
   </div>
 </div>
 
-<ng-template #modal let-modal class="modal">
+<ng-template #guestModal let-modal class="modal">
   <div class="modal-header">
     <h4 class="modal-title">Add guest</h4>
     <button
       type="button"
       class="close modal__button"
       aria-label="Close"
-      (click)="modal.close('Cross click'); myForm.reset()"
+      (click)="modal.close('Cross click'); guestForm.reset()"
     >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="myForm" [class.submitted]="clickBtn" class="form">
+    <form [formGroup]="guestForm" [class.submitted]="clickBtn" class="form">
       <input type="text" class="form-control" formControlName="name" placeholder="name: " />
       <input type="text" class="form-control" formControlName="surname" placeholder="surname: " />
       <input type="text" class="form-control" formControlName="gender" placeholder="gender: " />
@@ -103,9 +103,29 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light modal__button" (click)="modal.close('Close click'); myForm.reset()">
+    <button type="button" class="btn btn-light modal__button" (click)="modal.close(); guestForm.reset()">
       Close
     </button>
-    <button type="submit" class="btn btn-light modal__button" (click)="formSubmit(myForm)">Assign</button>
+    <button type="submit" class="btn btn-light modal__button" (click)="formSubmit(guestForm); modal.close()">
+      Assign
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal class="modal">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete guest</h4>
+    <button type="button" class="close modal__button" aria-label="Close" (click)="modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light modal__button" (click)="modal.close()">
+      No
+    </button>
+    <button class="btn btn-light modal__button" (click)="deleteGuest(); modal.close()">Yes</button>
   </div>
 </ng-template>
