@@ -42,8 +42,8 @@ export class DashboardComponent implements OnInit {
   public assignGuest(guestObj: IGuest): void {
     if (guestObj) {
       this.setFormValue(guestObj);
+      this.currentUserId = guestObj.id;
     }
-    this.currentUserId = guestObj.id;
     this.modalService.open(this.guestModal, { centered: true });
   }
 
