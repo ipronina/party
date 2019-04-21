@@ -1,5 +1,5 @@
 <div class="container">
-  <button type="button" class="button btn btn-light" (click)="addGuest()">
+  <button type="button" class="button btn btn-light" (click)="openModal(content)">
     <span translate>add</span>
   </button>
   <div class="table">
@@ -80,3 +80,32 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal class="modal">
+  <div class="modal-header">
+    <h4 class="modal-title">Add guest</h4>
+    <button
+      type="button"
+      class="close modal__button"
+      aria-label="Close"
+      (click)="modal.close('Cross click'); myForm.reset()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="myForm" [class.submitted]="clickBtn" class="form">
+      <input type="text" class="form-control" formControlName="name" placeholder="name: " />
+      <input type="text" class="form-control" formControlName="surname" placeholder="surname: " />
+      <input type="text" class="form-control" formControlName="gender" placeholder="gender: " />
+      <input type="text" class="form-control" formControlName="age" placeholder="age: " />
+      <input type="text" class="form-control" formControlName="drink" placeholder="drink: " />
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light modal__button" (click)="modal.close('Close click'); myForm.reset()">
+      Close
+    </button>
+    <button type="submit" class="btn btn-light modal__button" (click)="addGuest(myForm)">Add</button>
+  </div>
+</ng-template>
