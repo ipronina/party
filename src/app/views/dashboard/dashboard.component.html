@@ -1,4 +1,7 @@
 <div class="container">
+  <button type="button" class="button btn btn-light" (click)="addGuest()">
+    <span translate>add</span>
+  </button>
   <div class="table">
     <div
       class="table__item table__item_header"
@@ -7,63 +10,73 @@
       }"
     >
       <span
-        class="table__item-span"
+        class="table__item_span"
         [ngStyle]="{
           'grid-column': 1
         }"
-        >id</span
+        >Id</span
       >
       <span
-        class="table__item-span"
+        class="table__item_span"
         [ngStyle]="{
           'grid-column': 2
         }"
-        >Имя</span
+        >Name</span
       >
       <span
-        class="table__item-span"
+        class="table__item_span"
         [ngStyle]="{
           'grid-column': 3
         }"
-        >Фамилия</span
+        >Surname</span
       >
       <span
-        class="table__item-span"
+        class="table__item_span"
         [ngStyle]="{
           'grid-column': 4
         }"
-        >Пол</span
+        >Gender</span
       >
       <span
-        class="table__item-span"
+        class="table__item_span"
         [ngStyle]="{
           'grid-column': 5
         }"
-        >Возраст</span
+        >Age</span
       >
       <span
-        class="table__item-span"
+        class="table__item_span"
         [ngStyle]="{
           'grid-column': 6
         }"
-        >Напиток</span
+        >Drink</span
       >
     </div>
-    <div
-      *ngFor="let guest of guests; let i = index"
-      class="table__item"
-      [ngStyle]="{
-        'grid-row': i + 2
-      }"
-    >
-      <span
-        *ngFor="let property of getValues(guest); let j = index"
-        class="table__item-span"
+    <div class="table__content">
+      <div
+        *ngFor="let guest of guests; let i = index"
+        class="table__item"
         [ngStyle]="{
-          'grid-column': j + 1
+          'grid-row': i + 2
         }"
-        >{{ property }}</span
       >
+        <span
+          *ngFor="let property of getValues(guest); let j = index"
+          class="table__item_span"
+          [ngStyle]="{
+            'grid-column': j + 1
+          }"
+          >{{ property }}</span
+        >
+        <span class="table__item_span">
+          <button type="button" class="table__item-button btn btn-light">
+            <span translate>edit</span>
+          </button>
+          <button type="button" class="table__item-button btn btn-light" (click)="deleteGuest(id)">
+            <span translate>x</span>
+          </button>
+        </span>
+      </div>
     </div>
   </div>
 </div>
