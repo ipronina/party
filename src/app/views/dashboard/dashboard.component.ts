@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GUESTS } from '../../mocks';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { GuestService } from './services/guest';
 import { IGuest } from 'src/app/models';
+import { GuestsService } from './services/guests';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,13 +13,19 @@ import { IGuest } from 'src/app/models';
 export class DashboardComponent implements OnInit {
   @ViewChild('guestModal') public guestModal;
   @ViewChild('deleteModal') public deleteModal;
-  public guests = GUESTS;
+  public guests;
   public guestForm: FormGroup;
   private currentUserId: number;
 
-  constructor(private modalService: NgbModal, private guestService: GuestService) {}
+  constructor(
+    private modalService: NgbModal,
+    private guestService: GuestService,
+    private guestsService: GuestsService,
+  ) {}
 
   ngOnInit() {
+    this.guests = this.guestsService.transformedListOfGuests;
+
     this.guestForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
