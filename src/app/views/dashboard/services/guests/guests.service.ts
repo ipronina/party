@@ -26,7 +26,7 @@ export class GuestsService {
     if (this.guestsValue) {
       Object.keys(this.guestsValue).forEach(id => {
         modifierArray.push({
-          id,
+          id: +id,
           name: this.guestsValue[id].name,
           surname: this.guestsValue[id].surname,
           gender: this.guestsValue[id].gender,

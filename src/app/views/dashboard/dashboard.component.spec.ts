@@ -7,7 +7,7 @@ import { GuestsService } from './services/guests';
 import { IGuest } from 'src/app/models';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-fdescribe('DashboardComponent', () => {
+describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   const guestObjWithId = {
