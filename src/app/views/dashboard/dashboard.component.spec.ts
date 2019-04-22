@@ -4,14 +4,32 @@ import { DashboardComponent } from './dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GuestService } from './services/guest';
 import { GuestsService } from './services/guests';
+import { IGuest } from 'src/app/models';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-describe('DashboardComponent', () => {
+fdescribe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  const guestObjWithId = {
+    id: 1,
+    name: '',
+    surname: '',
+    gender: '',
+    age: 1,
+    drink: '',
+  };
+  const guestObjWithoutId = {
+    id: undefined,
+    name: '',
+    surname: '',
+    gender: '',
+    age: 1,
+    drink: '',
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, NgbModule],
       declarations: [DashboardComponent],
       providers: [GuestService, GuestsService],
     }).compileComponents();
@@ -43,28 +61,61 @@ describe('DashboardComponent', () => {
     expect(q).toEqual([1, 2]);
   });
 
-  it('should add guest ', inject([GuestService], (service: GuestService) => {
+  xit('should open adding/editing modal ', inject([NgbModal], (service: NgbModal) => {
+    component.assignGuest({} as IGuest);
+    service.open = jasmine.createSpy();
+    component.guestModal = jasmine.createSpy();
+    expect(service.open).toHaveBeenCalledWith(component.guestModal, { centered: true });
+  }));
+
+  it('should call setFormValue() and set currentGuestId to 1', inject([NgbModal], (service: NgbModal) => {
+    service.open = jasmine.createSpy();
+    (component as any).setFormValue = jasmine.createSpy();
+    component.assignGuest(guestObjWithId);
+    expect((component as any).setFormValue).toHaveBeenCalledWith(guestObjWithId);
+    expect((component as any).currentGuestId).toBe(1);
+  }));
+
+  it('should not call setFormValue()', inject([NgbModal], (service: NgbModal) => {
+    service.open = jasmine.createSpy();
+    (component as any).setFormValue = jasmine.createSpy();
+    component.assignGuest({} as IGuest);
+    expect((component as any).setFormValue).not.toHaveBeenCalledWith(guestObjWithId);
+  }));
+
+  it('should open removing modal and set currentGuestId to 1', inject([NgbModal], (service: NgbModal) => {
+    service.open = jasmine.createSpy();
+    component.openDeleteModal(1);
+    expect((component as any).currentGuestId).toBe(1);
+    expect(service.open).toHaveBeenCalledWith(component.deleteModal, { centered: true });
+  }));
+
+  xit('should not open deleting modal', inject([NgbModal], (service: NgbModal) => {
+    service.open = jasmine.createSpy();
+    component.openDeleteModal(null);
+    expect(service.open).not.toHaveBeenCalled();
+  }));
+
+  it('should add guest and set currentGuestId to 0', inject([GuestService], (service: GuestService) => {
     const form = {
       valid: true,
       controls: {
-        name: { value: 1 },
-        surname: { value: 2 },
-        gender: { value: 3 },
-        age: { value: 4 },
-        drink: { value: 5 },
+        name: { value: '' },
+        surname: { value: '' },
+        gender: { value: '' },
+        age: { value: 1 },
+        drink: { value: '' },
       },
       reset: () => {},
     };
-
-    const obj = {
-      name: 1,
-      surname: 2,
-      gender: 3,
-      age: 4,
-      drink: 5,
-    };
-    service.addGuest = jasmine.createSpy();
-    component.addGuest(form as any);
-    expect(service.addGuest).toHaveBeenCalledWith(obj);
+    service.assignGuest = jasmine.createSpy();
+    component.formSubmit(form as any);
+    expect(service.assignGuest).toHaveBeenCalledWith(guestObjWithoutId);
+    expect((component as any).currentGuestId).toBe(0);
   }));
+
+  it('should set form value', () => {
+    (component as any).setFormValue(guestObjWithId);
+    expect(component.guestForm.value).toEqual({ name: '', surname: '', gender: '', age: 1, drink: '' });
+  });
 });

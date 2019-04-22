@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('deleteModal') public deleteModal;
   public guests;
   public guestForm: FormGroup;
-  private currentUserId: number;
+  private currentGuestId: number;
 
   constructor(
     private modalService: NgbModal,
@@ -44,35 +44,36 @@ export class DashboardComponent implements OnInit {
   public assignGuest(guestObj: IGuest): void {
     if (guestObj) {
       this.setFormValue(guestObj);
-      this.currentUserId = guestObj.id;
+      this.currentGuestId = guestObj.id;
     }
     this.modalService.open(this.guestModal, { centered: true });
   }
 
   public openDeleteModal(id: number): void {
-    this.currentUserId = id;
+    this.currentGuestId = id;
     this.modalService.open(this.deleteModal, { centered: true });
   }
 
   public deleteGuest(): void {
-    if (this.currentUserId) {
-      this.guestService.removeGuest(this.currentUserId);
-      this.currentUserId = 0;
+    if (this.currentGuestId) {
+      this.guestService.removeGuest(this.currentGuestId);
+      this.currentGuestId = 0;
     }
   }
 
   public formSubmit(form: FormGroup): void {
     if (form.valid) {
       const guestObj: any = {};
-      Object.keys(this.guestForm.controls).forEach(control => {
-        guestObj[control] = this.guestForm.controls[control].value;
+      Object.keys(form.controls).forEach(control => {
+        guestObj[control] = form.controls[control].value;
       });
-      guestObj.id = this.currentUserId ? this.currentUserId : guestObj.id;
+      guestObj.id = this.currentGuestId ? this.currentGuestId : guestObj.id;
       this.guestService.assignGuest(guestObj as any);
       form.reset();
-      this.currentUserId = 0;
+      this.currentGuestId = 0;
     }
   }
+
   private setFormValue(object: IGuest): void {
     Object.keys(this.guestForm.controls).forEach(control => {
       this.guestForm.controls[control].setValue(object[control]);
