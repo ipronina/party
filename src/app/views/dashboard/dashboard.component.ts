@@ -24,7 +24,9 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.guests = this.guestsService.transformedListOfGuests;
+    this.guestsService.guests$.subscribe(() => {
+      this.guests = this.guestsService.transformedListOfGuests;
+    });
 
     this.guestForm = new FormGroup({
       name: new FormControl('', [Validators.required]),

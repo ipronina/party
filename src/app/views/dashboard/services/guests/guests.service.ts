@@ -1,29 +1,37 @@
 import { Injectable } from '@angular/core';
 /* Models */
 import { IGuest } from 'src/app/models';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class GuestsService {
-  public guests;
+  public guests$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   constructor() {
-    this.guests = JSON.parse(sessionStorage.getItem('guests')) || {};
+    this.guests$.next(JSON.parse(sessionStorage.getItem('guests')) || {});
   }
 
-  public updateGuests() {
-    sessionStorage.setItem('guests', JSON.stringify(this.guests));
+  public get guestsValue(): any {
+    return this.guests$.getValue();
+  }
+
+  public updateGuests(): void {
+    sessionStorage.setItem('guests', JSON.stringify(this.guestsValue));
+    this.guests$.next(this.guestsValue);
   }
 
   public get transformedListOfGuests(): IGuest[] {
     const modifierArray = [];
-    if (this.guests) {
-      Object.keys(this.guests).forEach(id => {
+    if (this.guestsValue) {
+      Object.keys(this.guestsValue).forEach(id => {
         modifierArray.push({
           id,
-          name: this.guests[id].name,
-          surname: this.guests[id].surname,
-          gender: this.guests[id].gender,
-          age: this.guests[id].age,
-          drink: this.guests[id].drink,
+          name: this.guestsValue[id].name,
+          surname: this.guestsValue[id].surname,
+          gender: this.guestsValue[id].gender,
+          age: this.guestsValue[id].age,
+          drink: this.guestsValue[id].drink,
         });
       });
     }

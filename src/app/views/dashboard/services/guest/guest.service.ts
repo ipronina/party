@@ -16,22 +16,18 @@ export class GuestService {
     const guestObj = {};
     let id;
     // if guest exist
-    if (guest.id && this.guestsService.guests[guest.id]) {
+    if (guest.id && this.guestsService.guestsValue[guest.id]) {
       id = guest.id;
     } else {
-      id = +findLastKey(this.guestsService.guests) + 1 || 1; // last id from SS + 1
+      id = +findLastKey(this.guestsService.guestsValue) + 1 || 1; // last id from SS + 1
     }
     guestObj[id] = guest;
-    assign(this.guestsService.guests, guestObj);
+    assign(this.guestsService.guestsValue, guestObj);
     this.guestsService.updateGuests();
   }
 
-  public getGuest(id: number): void {
-    assign(get(this.guestsService.guests, 'guests.id'), { id });
-  }
-
   public removeGuest(id: number): void {
-    delete this.guestsService.guests[id];
+    delete this.guestsService.guestsValue[id];
     this.guestsService.updateGuests();
   }
 }
